@@ -1,9 +1,11 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar';
-import { getImages } from 'services/publicationsApi';
+import ImageGallery from './ImageGallery';
 
 export class App extends Component {
   state = {
+    isLoading: false,
+    images: [],
     query: '',
     page: 1,
   };
@@ -12,21 +14,12 @@ export class App extends Component {
     this.setState({ query: query, page: 1 });
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     this.setState({ isLoading: true });
-  //     const items = await getImages('cat', 2);
-  //     this.setState({ isLoading: false, items });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   render() {
+    const { query, page } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        {/* <ImageGallery> */}
+        <ImageGallery query={query} page={page} />
       </div>
     );
   }
