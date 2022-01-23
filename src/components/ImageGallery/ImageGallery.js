@@ -1,7 +1,8 @@
 import ImageGalleryItem from 'components/ImageGalleryItem';
+
 import './imageGallery.css';
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, modalOpen }) => {
   return (
     <ul className="imageGallery">
       {images.map(({ id, largeImageURL, tags, webformatURL }) => {
@@ -11,6 +12,7 @@ const ImageGallery = ({ images }) => {
             largeImage={largeImageURL}
             tags={tags}
             preview={webformatURL}
+            modalOpen={modalOpen}
           />
         );
       })}

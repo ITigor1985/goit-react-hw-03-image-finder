@@ -1,8 +1,8 @@
 import './imageGalleryItem.css';
 
-const ImageGalleryItem = ({ largeImage, tags, preview }) => {
+const ImageGalleryItem = ({ largeImage, tags, preview, modalOpen }) => {
   return (
-    <li className="imageGalleryItem">
+    <li onClick={event => modalOpen(largeImage, tags, event)}>
       <a className="imageGalleryItem-link" href={largeImage}>
         <img className="imageGalleryItem-image" src={preview} alt={tags} />
       </a>

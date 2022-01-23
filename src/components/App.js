@@ -4,6 +4,7 @@ import ImageGallery from './ImageGallery';
 import { getImages } from 'services/publicationsApi';
 import Button from './Button';
 import Loader from './Loader';
+import Modal from './Modal';
 import './App.css';
 const items_on_the_page = 12;
 export class App extends Component {
@@ -44,7 +45,7 @@ export class App extends Component {
       this.setState({ isLoading: true });
       const { hits, totalHits } = await getImages(query, page);
       if (totalHits === 0) {
-        alert('Nothing found with such query');
+        alert('Nothing found');
         this.setState({ isLoading: false, currentHitsPerPage: null });
         return;
       }
@@ -75,6 +76,30 @@ export class App extends Component {
     this.getImagesData();
   };
 
+  modalOpen = (moduleUrl, moduleAlt, event) => {
+    event.preventDefault();
+    this.setState({
+      largeImageURL: moduleUrl,
+      alt: moduleAlt,
+    });
+  };
+  componentDidMount() {
+    window.addEventListener('keydown', this.cleanEventListener);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.cleanEventListener);
+  }
+
+  modalClose = () => {
+    this.setState({ largeImageURL: '', alt: '' });
+  };
+
+  cleanEventListener = e => {
+    if (e.code === 'Escape') {
+      this.modalClose();
+    }
+  };
+
   render() {
     const { images, currentHitsPerPage, error, isLoading } = this.state;
     return (
@@ -83,7 +108,7 @@ export class App extends Component {
 
         {images.length > 0 && !error && (
           <>
-            <ImageGallery images={images} />
+            <ImageGallery images={images} modalOpen={this.modalOpen} />
             {currentHitsPerPage && currentHitsPerPage < items_on_the_page && (
               <p className="Message">End of search results</p>
             )}
@@ -95,6 +120,13 @@ export class App extends Component {
         {isLoading && <Loader />}
         {error && (
           <h2 className="Message">Something went wrong, please try again</h2>
+        )}
+        {this.state.largeImageURL && (
+          <Modal
+            largeImageURL={this.state.largeImageURL}
+            alt={this.state.alt}
+            onClick={this.modalClose}
+          />
         )}
       </div>
     );
