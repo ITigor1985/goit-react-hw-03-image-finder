@@ -2,8 +2,10 @@ import { Component } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import { getImages } from 'services/publicationsApi';
+import Button from './Button';
+import Loader from './Loader';
 import './App.css';
-
+const items_on_the_page = 12;
 export class App extends Component {
   state = {
     isLoading: false,
@@ -38,13 +40,12 @@ export class App extends Component {
 
   async getImagesData() {
     const { query, page } = this.state;
-    console.log(query);
     try {
       this.setState({ isLoading: true });
       const { hits, totalHits } = await getImages(query, page);
       if (totalHits === 0) {
         alert('Nothing found with such query');
-        this.setState({ loading: false, currentHitsPerPage: null });
+        this.setState({ isLoading: false, currentHitsPerPage: null });
         return;
       }
       const images = this.makeImagesArray(hits);
@@ -60,7 +61,7 @@ export class App extends Component {
       console.log(error);
       this.setState({ error: error.message });
     } finally {
-      this.setState({ loading: false });
+      this.setState({ isLoading: false });
     }
   }
 
@@ -70,12 +71,31 @@ export class App extends Component {
     });
   };
 
+  handleLoadMoreClick = () => {
+    this.getImagesData();
+  };
+
   render() {
-    const { images } = this.state;
+    const { images, currentHitsPerPage, error, isLoading } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} />
+
+        {images.length > 0 && !error && (
+          <>
+            <ImageGallery images={images} />
+            {currentHitsPerPage && currentHitsPerPage < items_on_the_page && (
+              <p className="Message">End of search results</p>
+            )}
+          </>
+        )}
+        {currentHitsPerPage === items_on_the_page && !isLoading && (
+          <Button onClick={this.handleLoadMoreClick} />
+        )}
+        {isLoading && <Loader />}
+        {error && (
+          <h2 className="Message">Something went wrong, please try again</h2>
+        )}
       </div>
     );
   }
