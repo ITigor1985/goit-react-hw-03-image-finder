@@ -18,7 +18,6 @@ class SearchBar extends Component {
       alert('Type something please');
       return;
     }
-
     onSubmit(query);
   };
 
