@@ -1,4 +1,5 @@
 import './imageGalleryItem.css';
+import propTypes from 'prop-types';
 
 const ImageGalleryItem = ({ largeImage, tags, preview, modalOpen }) => {
   return (
@@ -11,3 +12,10 @@ const ImageGalleryItem = ({ largeImage, tags, preview, modalOpen }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  largeImage: propTypes.string.isRequired,
+  tags: propTypes.string.isRequired,
+  preview: propTypes.string.isRequired,
+  modalOpen: propTypes.func.isRequired,
+};

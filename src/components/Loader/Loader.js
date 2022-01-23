@@ -1,4 +1,4 @@
-import { SpinnerCircular } from 'spinners-react';
+import { SpinnerCircular } from 'spinners-react/lib/esm/SpinnerCircular';
 
 const Loader = () => {
   const style = {

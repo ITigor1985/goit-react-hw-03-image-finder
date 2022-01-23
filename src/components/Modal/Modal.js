@@ -1,4 +1,5 @@
 import './modal.css';
+import propTypes from 'prop-types';
 
 const Modal = ({ largeImageURL, alt, onClick }) => {
   return (
@@ -10,3 +11,9 @@ const Modal = ({ largeImageURL, alt, onClick }) => {
   );
 };
 export default Modal;
+
+Modal.propTypes = {
+  largeImageURL: propTypes.string.isRequired,
+  alt: propTypes.string.isRequired,
+  onClick: propTypes.func.isRequired,
+};

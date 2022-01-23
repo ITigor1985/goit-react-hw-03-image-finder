@@ -6,7 +6,9 @@ import Button from './Button';
 import Loader from './Loader';
 import Modal from './Modal';
 import './App.css';
+
 const items_on_the_page = 12;
+
 export class App extends Component {
   state = {
     isLoading: false,
@@ -21,7 +23,6 @@ export class App extends Component {
     this.setState(() => {
       return { query: query, page: 1, images: [] };
     });
-    console.log(this.state.query);
   };
 
   componentDidUpdate(_, prevState) {
@@ -118,9 +119,7 @@ export class App extends Component {
           <Button onClick={this.handleLoadMoreClick} />
         )}
         {isLoading && <Loader />}
-        {error && (
-          <h2 className="Message">Something went wrong, please try again</h2>
-        )}
+        {error && <h2 className="Message">Please try again</h2>}
         {this.state.largeImageURL && (
           <Modal
             largeImageURL={this.state.largeImageURL}
